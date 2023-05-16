@@ -3,7 +3,8 @@ import cv2
 import HandTrackingModule as htm
 import time
 import mouse 
- 
+from screeninfo import get_monitors
+
 ##########################
 wCam, hCam = 640, 480
 # frameR = 150 # Frame Reduction
@@ -13,10 +14,13 @@ x_ = [100,100]
 smoothening = 7
 #########################
  
-cv2.namedWindow("dst", cv2.WND_PROP_FULLSCREEN)
-cv2.setWindowProperty("dst",cv2.WND_PROP_FULLSCREEN,cv2.WINDOW_FULLSCREEN)
-(a,b,wScr,hScr) = cv2.getWindowImageRect('dst')
-cv2.destroyAllWindows()
+# cv2.namedWindow("dst", cv2.WND_PROP_FULLSCREEN)
+# cv2.setWindowProperty("dst",cv2.WND_PROP_FULLSCREEN,cv2.WINDOW_FULLSCREEN)
+# (a,b,wScr,hScr) = cv2.getWindowImageRect('dst')
+# cv2.destroyAllWindows()
+
+wScr = get_monitors()[0].width
+hScr = get_monitors()[0].height
 
 ###
 c = True
