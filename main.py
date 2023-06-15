@@ -42,7 +42,6 @@ while True:
     lmList, bbox = detector.findPosition(img)
     if len(lmList) != 0:
         x1, y1 = lmList[8][1:]
-        x2, y2 = lmList[12][1:]
     
     fingers = detector.fingersUp()
     cv2.rectangle(img, (x_[0], y_[0]), (wCam - x_[1], hCam - y_[1]),

@@ -47,28 +47,27 @@ while True:
     img = detector.findHands(img)
     lmList, bbox = detector.findPosition(img)
     if len(lmList) != 0:
-        x1, y1 = lmList[8][1:]
-        x2, y2 = lmList[12][1:]
+        x1, y1 = lmList[5][1:]
     
     fingers = detector.fingersUp()
+    print(fingers)
     cv2.rectangle(img, (x_[0], y_[0]), (wCam - x_[1], hCam - y_[1]),
     (255, 0, 255), 2)
-    if not fingers[4]:
-        if not fingers[1]:
+    if fingers[4] == 0 and fingers[0] == 1:
+        if fingers[1] == 0:
             mouse.wheel(1)
-        elif not fingers[2]:
+        elif fingers[2] == 0:
             mouse.wheel(-1)
+    elif fingers[1] == fingers[2] and fingers[1]== 1:
+        x3 = np.interp(x1, (x_[0], wCam - x_[1]), (0, wScr))
+        y3 = np.interp(y1, (y_[0], hCam - y_[1]), (0, hScr))
+        # 6. Smoothen Values
+        clocX = plocX + (x3 - plocX) / smoothening
+        clocY = plocY + (y3 - plocY) / smoothening
+        mouse.move(wScr - clocX, clocY)
+        plocX, plocY = clocX, clocY
     else:
-        if not fingers[1] == 1:
-            x3 = np.interp(x1, (x_[0], wCam - x_[1]), (0, wScr))
-            y3 = np.interp(y1, (y_[0], hCam - y_[1]), (0, hScr))
-            # 6. Smoothen Values
-            clocX = plocX + (x3 - plocX) / smoothening
-            clocY = plocY + (y3 - plocY) / smoothening
-            mouse.move(wScr - clocX, clocY)
-            plocX, plocY = clocX, clocY
-            
-        if not fingers[2] == 1:
+        if fingers[1] == 0:
             if c:
                 mouse.press('left')
             c = False
@@ -76,13 +75,14 @@ while True:
             c = True
             mouse.release('left')
 
-        if not fingers[3] == 1:
+        if fingers[2] == 0:
             if d_c:
                 mouse.press('right')
             d_c = False
         elif not d_c:
             d_c = True
             mouse.release('right')
+        
     
     cTime = time.time()
     fps = 1 / (cTime - pTime)
